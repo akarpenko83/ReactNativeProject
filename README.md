@@ -1,2 +1,0 @@
-# ReactNativeProject
-GOIT homework
