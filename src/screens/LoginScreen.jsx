@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { ImageBackground } from 'react-native';
 import {
   KeyboardAvoidingView,
   SafeAreaView,
@@ -12,6 +13,9 @@ import {
   Portal,
   Dialog,
 } from 'react-native-paper';
+import background from '../../assets/background.jpg';
+import { useNavigation } from '@react-navigation/native';
+import { StatusBar } from 'expo-status-bar';
 
 export default LoginScreen = () => {
   const [email, setEmail] = useState('');
@@ -22,6 +26,8 @@ export default LoginScreen = () => {
   const hideDialog = () => setVisible(false);
   const credentials = `e-mail: ${email}, pass: ${password}`;
 
+  const navigation = useNavigation();
+
   const handleLogin = () => {
     console.debug('CREDENTIALS:', credentials);
     showDialog();
@@ -29,79 +35,92 @@ export default LoginScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.mainBox}>
-        <Text style={styles.header}>Увійти</Text>
-        <View style={styles.credentials}>
-          <KeyboardAvoidingView
-            behavior={
-              Platform.OS == 'ios' ? 'padding' : 'height'
-            }
+      <StatusBar style="auto" />
+      <ImageBackground
+        source={background}
+        resizeMode="cover"
+        style={styles.image}
+      >
+        <View style={styles.mainBox}>
+          <Text style={styles.header}>Увійти</Text>
+          <View style={styles.credentials}>
+            <KeyboardAvoidingView
+              behavior={
+                Platform.OS == 'ios' ? 'padding' : 'height'
+              }
+            >
+              <TextInput
+                style={styles.input}
+                label="Адреса електронної пошти"
+                value={email}
+                onChangeText={setEmail}
+              />
+            </KeyboardAvoidingView>
+            <KeyboardAvoidingView
+              behavior={
+                Platform.OS == 'ios' ? 'padding' : 'height'
+              }
+            >
+              <TextInput
+                style={[styles.input, styles.password]}
+                secureTextEntry={true}
+                label="Пароль"
+                value={password}
+                onChangeText={setPassword}
+              />
+            </KeyboardAvoidingView>
+            <Button
+              mode="text"
+              textColor="blue"
+              onPress={() =>
+                console.log('Pressed showpassword')
+              }
+              style={styles.showPass}
+            >
+              Показати
+            </Button>
+          </View>
+          <Button
+            mode="contained"
+            buttonColor="darkorange"
+            onPress={() => handleLogin()}
+            style={styles.submitBtn}
           >
-            <TextInput
-              style={styles.input}
-              label="Адреса електронної пошти"
-              value={email}
-              onChangeText={setEmail}
-            />
-          </KeyboardAvoidingView>
-          <KeyboardAvoidingView
-            behavior={
-              Platform.OS == 'ios' ? 'padding' : 'height'
-            }
-          >
-            <TextInput
-              style={[styles.input, styles.password]}
-              secureTextEntry={true}
-              label="Пароль"
-              value={password}
-              onChangeText={setPassword}
-            />
-          </KeyboardAvoidingView>
+            Увійти
+          </Button>
+
           <Button
             mode="text"
             textColor="blue"
-            onPress={() =>
-              console.log('Pressed showpassword')
-            }
-            style={styles.showPass}
+            onPress={() => navigation.navigate('Signup')}
           >
-            Показати
+            Немає акаунту? Зареєструватися
           </Button>
         </View>
-        <Button
-          mode="contained"
-          buttonColor="darkorange"
-          onPress={() => handleLogin()}
-          style={styles.submitBtn}
-        >
-          Увійти
-        </Button>
-
-        <Button
-          mode="text"
-          textColor="blue"
-          onPress={() => console.log('Pressed Signup')}
-        >
-          Немає акаунту? Зареєструватися
-        </Button>
-      </View>
-      <Portal>
-        <Dialog visible={visible} onDismiss={hideDialog}>
-          <Dialog.Title>CREDENTIALS</Dialog.Title>
-          <Dialog.Content>
-            <Text variant="bodyMedium">{credentials}</Text>
-          </Dialog.Content>
-          <Dialog.Actions>
-            <Button onPress={hideDialog}>Done</Button>
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
+        <Portal>
+          <Dialog visible={visible} onDismiss={hideDialog}>
+            <Dialog.Title>CREDENTIALS</Dialog.Title>
+            <Dialog.Content>
+              <Text variant="bodyMedium">
+                {credentials}
+              </Text>
+            </Dialog.Content>
+            <Dialog.Actions>
+              <Button onPress={hideDialog}>Done</Button>
+            </Dialog.Actions>
+          </Dialog>
+        </Portal>
+      </ImageBackground>
     </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  image: {
+    flex: 1,
+    width: '100%',
     justifyContent: 'flex-end',
   },
   mainBox: {

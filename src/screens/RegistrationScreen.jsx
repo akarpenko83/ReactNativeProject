@@ -1,7 +1,9 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import {
   Alert,
   Image,
+  ImageBackground,
   Keyboard,
   KeyboardAvoidingView,
   SafeAreaView,
@@ -15,6 +17,8 @@ import {
   Dialog,
   Portal,
 } from 'react-native-paper';
+import background from '../../assets/background.jpg';
+import { StatusBar } from 'expo-status-bar';
 
 export default RegistrationScreen = () => {
   const [isKeyboardShown, setKeyboardShown] =
@@ -23,6 +27,7 @@ export default RegistrationScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [visible, setVisible] = useState(false);
+  const navigation = useNavigation();
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -55,98 +60,111 @@ export default RegistrationScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.mainBox}>
-        <View style={styles.avatarBox}>
-          {isKeyboardShown && (
+      <StatusBar style="auto" />
+      <ImageBackground
+        source={background}
+        resizeMode="cover"
+        style={styles.image}
+      >
+        <View style={styles.mainBox}>
+          <View style={styles.avatarBox}>
+            {isKeyboardShown && (
+              <Image
+                source={require('../../assets/avatar.jpg')}
+                style={styles.avatar}
+              />
+            )}
             <Image
-              source={require('../../assets/avatar.jpg')}
-              style={styles.avatar}
+              source={
+                !isKeyboardShown
+                  ? require('../../assets/addBtn.png')
+                  : require('../../assets/addBtnDisabled.png')
+              }
+              style={styles.addBtn}
             />
-          )}
-          <Image
-            source={
-              !isKeyboardShown
-                ? require('../../assets/addBtn.png')
-                : require('../../assets/addBtnDisabled.png')
-            }
-            style={styles.addBtn}
-          />
-        </View>
-        <Text style={styles.header}>Реєстрація</Text>
-        <View style={styles.credentials}>
-          <TextInput
-            style={styles.input}
-            label="Логін"
-            mode="flat"
-            value={login}
-            onChangeText={setLogin}
-          />
-
-          <TextInput
-            style={styles.input}
-            label="Адреса електронної пошти"
-            value={email}
-            onChangeText={setEmail}
-          />
-
-          <KeyboardAvoidingView
-            behavior={
-              Platform.OS == 'ios' ? 'padding' : 'height'
-            }
-          >
+          </View>
+          <Text style={styles.header}>Реєстрація</Text>
+          <View style={styles.credentials}>
             <TextInput
-              secureTextEntry={true}
               style={styles.input}
-              label="Пароль"
-              value={password}
-              onChangeText={setPassword}
+              label="Логін"
+              mode="flat"
+              value={login}
+              onChangeText={setLogin}
             />
-          </KeyboardAvoidingView>
 
+            <TextInput
+              style={styles.input}
+              label="Адреса електронної пошти"
+              value={email}
+              onChangeText={setEmail}
+            />
+
+            <KeyboardAvoidingView
+              behavior={
+                Platform.OS == 'ios' ? 'padding' : 'height'
+              }
+            >
+              <TextInput
+                secureTextEntry={true}
+                style={styles.input}
+                label="Пароль"
+                value={password}
+                onChangeText={setPassword}
+              />
+            </KeyboardAvoidingView>
+
+            <Button
+              mode="text"
+              textColor="blue"
+              onPress={() =>
+                console.log('Pressed showpassword')
+              }
+              style={styles.showPass}
+            >
+              Показати
+            </Button>
+          </View>
+          <Button
+            mode="contained"
+            buttonColor="darkorange"
+            onPress={() => handleSignup()}
+            style={styles.submitBtn}
+          >
+            Зареєструватися
+          </Button>
           <Button
             mode="text"
             textColor="blue"
-            onPress={() =>
-              console.log('Pressed showpassword')
-            }
-            style={styles.showPass}
+            onPress={() => navigation.navigate('Login')}
           >
-            Показати
+            Вже є акаунт? Увійти
           </Button>
         </View>
-        <Button
-          mode="contained"
-          buttonColor="darkorange"
-          onPress={() => handleSignup()}
-          style={styles.submitBtn}
-        >
-          Зареєструватися
-        </Button>
-        <Button
-          mode="text"
-          textColor="blue"
-          onPress={() => console.log('Pressed Login')}
-        >
-          Вже є акаунт? Увійти
-        </Button>
-      </View>
-      <Portal>
-        <Dialog visible={visible} onDismiss={hideDialog}>
-          <Dialog.Title>CREDENTIALS</Dialog.Title>
-          <Dialog.Content>
-            <Text variant="bodyMedium">{credentials}</Text>
-          </Dialog.Content>
-          <Dialog.Actions>
-            <Button onPress={hideDialog}>Done</Button>
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
+        <Portal>
+          <Dialog visible={visible} onDismiss={hideDialog}>
+            <Dialog.Title>CREDENTIALS</Dialog.Title>
+            <Dialog.Content>
+              <Text variant="bodyMedium">
+                {credentials}
+              </Text>
+            </Dialog.Content>
+            <Dialog.Actions>
+              <Button onPress={hideDialog}>Done</Button>
+            </Dialog.Actions>
+          </Dialog>
+        </Portal>
+      </ImageBackground>
     </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  image: {
+    flex: 1,
+    width: '100%',
     justifyContent: 'flex-end',
   },
   mainBox: {
