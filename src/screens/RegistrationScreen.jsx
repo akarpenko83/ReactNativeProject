@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Alert,
   Image,
   Keyboard,
   KeyboardAvoidingView,
@@ -11,6 +12,8 @@ import {
   TextInput,
   Text,
   Button,
+  Dialog,
+  Portal,
 } from 'react-native-paper';
 
 export default RegistrationScreen = () => {
@@ -19,6 +22,7 @@ export default RegistrationScreen = () => {
   const [login, setLogin] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -39,6 +43,15 @@ export default RegistrationScreen = () => {
       keyboardDidHideListener.remove();
     };
   }, []);
+
+  const showDialog = () => setVisible(true);
+  const hideDialog = () => setVisible(false);
+  const credentials = `login: ${login}, e-mail: ${email}, pass: ${password}`;
+
+  const handleSignup = () => {
+    console.debug('CREDENTIALS:', credentials);
+    showDialog();
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -66,14 +79,14 @@ export default RegistrationScreen = () => {
             label="Логін"
             mode="flat"
             value={login}
-            onChange={setLogin}
+            onChangeText={setLogin}
           />
 
           <TextInput
             style={styles.input}
             label="Адреса електронної пошти"
             value={email}
-            onChange={setEmail}
+            onChangeText={setEmail}
           />
 
           <KeyboardAvoidingView
@@ -86,7 +99,7 @@ export default RegistrationScreen = () => {
               style={styles.input}
               label="Пароль"
               value={password}
-              onChange={setPassword}
+              onChangeText={setPassword}
             />
           </KeyboardAvoidingView>
 
@@ -104,9 +117,7 @@ export default RegistrationScreen = () => {
         <Button
           mode="contained"
           buttonColor="darkorange"
-          onPress={() =>
-            console.log('Pressed SignupButton')
-          }
+          onPress={() => handleSignup()}
           style={styles.submitBtn}
         >
           Зареєструватися
@@ -119,6 +130,17 @@ export default RegistrationScreen = () => {
           Вже є акаунт? Увійти
         </Button>
       </View>
+      <Portal>
+        <Dialog visible={visible} onDismiss={hideDialog}>
+          <Dialog.Title>CREDENTIALS</Dialog.Title>
+          <Dialog.Content>
+            <Text variant="bodyMedium">{credentials}</Text>
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button onPress={hideDialog}>Done</Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
     </SafeAreaView>
   );
 };

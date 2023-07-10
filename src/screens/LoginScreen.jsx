@@ -11,11 +11,24 @@ import {
   TextInput,
   Text,
   Button,
+  Portal,
+  Dialog,
 } from 'react-native-paper';
 
 export default LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [visible, setVisible] = useState(false);
+
+  const showDialog = () => setVisible(true);
+  const hideDialog = () => setVisible(false);
+  const credentials = `e-mail: ${email}, pass: ${password}`;
+
+  const handleLogin = () => {
+    console.debug('CREDENTIALS:', credentials);
+    showDialog();
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.mainBox}>
@@ -29,8 +42,8 @@ export default LoginScreen = () => {
             <TextInput
               style={styles.input}
               label="Адреса електронної пошти"
-              value={null}
-              onChange={null}
+              value={email}
+              onChangeText={setEmail}
             />
           </KeyboardAvoidingView>
           <KeyboardAvoidingView
@@ -42,8 +55,8 @@ export default LoginScreen = () => {
               style={[styles.input, styles.password]}
               secureTextEntry={true}
               label="Пароль"
-              value={null}
-              onChange={null}
+              value={password}
+              onChangeText={setPassword}
             />
           </KeyboardAvoidingView>
           <Button
@@ -60,7 +73,7 @@ export default LoginScreen = () => {
         <Button
           mode="contained"
           buttonColor="darkorange"
-          onPress={() => console.log('Pressed Login')}
+          onPress={() => handleLogin()}
           style={styles.submitBtn}
         >
           Увійти
@@ -74,6 +87,17 @@ export default LoginScreen = () => {
           Немає акаунту? Зареєструватися
         </Button>
       </View>
+      <Portal>
+        <Dialog visible={visible} onDismiss={hideDialog}>
+          <Dialog.Title>CREDENTIALS</Dialog.Title>
+          <Dialog.Content>
+            <Text variant="bodyMedium">{credentials}</Text>
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button onPress={hideDialog}>Done</Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
     </SafeAreaView>
   );
 };
