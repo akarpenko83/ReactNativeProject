@@ -5,7 +5,6 @@ import {
   KeyboardAvoidingView,
   SafeAreaView,
   StyleSheet,
-  TouchableWithoutFeedback,
   View,
 } from 'react-native';
 import {
@@ -17,6 +16,9 @@ import {
 export default RegistrationScreen = () => {
   const [isKeyboardShown, setKeyboardShown] =
     useState(false);
+  const [login, setLogin] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -40,110 +42,96 @@ export default RegistrationScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={styles.mainBox}>
-          <View style={styles.avatarBox}>
-            {isKeyboardShown && (
-              <Image
-                source={require('../../assets/avatar.jpg')}
-                style={styles.avatar}
-              />
-            )}
+      <View style={styles.mainBox}>
+        <View style={styles.avatarBox}>
+          {isKeyboardShown && (
             <Image
-              source={
-                !isKeyboardShown
-                  ? require('../../assets/addBtn.png')
-                  : require('../../assets/addBtnDisabled.png')
-              }
-              style={styles.addBtn}
+              source={require('../../assets/avatar.jpg')}
+              style={styles.avatar}
             />
-          </View>
-          <Text style={styles.header}>Реєстрація</Text>
-          <View style={styles.credentials}>
-            <KeyboardAvoidingView
-              behavior={
-                Platform.OS == 'ios' ? 'padding' : 'height'
-              }
-            >
-              <TextInput
-                style={styles.input}
-                label="Логін"
-                mode="flat"
-                value={null}
-                onChange={null}
-              />
-            </KeyboardAvoidingView>
-            <KeyboardAvoidingView
-              behavior={
-                Platform.OS == 'ios' ? 'padding' : 'height'
-              }
-            >
-              <TextInput
-                style={styles.input}
-                label="Адреса електронної пошти"
-                value={null}
-                onChange={null}
-              />
-            </KeyboardAvoidingView>
-            <KeyboardAvoidingView
-              behavior={
-                Platform.OS == 'ios' ? 'padding' : 'height'
-              }
-            >
-              <TextInput
-                secureTextEntry={true}
-                style={[styles.input, styles.password]}
-                label="Пароль"
-                value={null}
-                onChange={null}
-              />
-            </KeyboardAvoidingView>
-
-            <Button
-              mode="text"
-              textColor="blue"
-              onPress={() =>
-                console.log('Pressed showpassword')
-              }
-              style={styles.showPass}
-            >
-              Показати
-            </Button>
-          </View>
-          <Button
-            mode="contained"
-            buttonColor="darkorange"
-            onPress={() =>
-              console.log('Pressed SignupButton')
+          )}
+          <Image
+            source={
+              !isKeyboardShown
+                ? require('../../assets/addBtn.png')
+                : require('../../assets/addBtnDisabled.png')
             }
-            style={styles.submitBtn}
+            style={styles.addBtn}
+          />
+        </View>
+        <Text style={styles.header}>Реєстрація</Text>
+        <View style={styles.credentials}>
+          <TextInput
+            style={styles.input}
+            label="Логін"
+            mode="flat"
+            value={login}
+            onChange={setLogin}
+          />
+
+          <TextInput
+            style={styles.input}
+            label="Адреса електронної пошти"
+            value={email}
+            onChange={setEmail}
+          />
+
+          <KeyboardAvoidingView
+            behavior={
+              Platform.OS == 'ios' ? 'padding' : 'height'
+            }
           >
-            Зареєструватися
-          </Button>
+            <TextInput
+              secureTextEntry={true}
+              style={styles.input}
+              label="Пароль"
+              value={password}
+              onChange={setPassword}
+            />
+          </KeyboardAvoidingView>
+
           <Button
             mode="text"
             textColor="blue"
-            onPress={() => console.log('Pressed Login')}
+            onPress={() =>
+              console.log('Pressed showpassword')
+            }
+            style={styles.showPass}
           >
-            Вже є акаунт? Увійти
+            Показати
           </Button>
         </View>
-      </TouchableWithoutFeedback>
+        <Button
+          mode="contained"
+          buttonColor="darkorange"
+          onPress={() =>
+            console.log('Pressed SignupButton')
+          }
+          style={styles.submitBtn}
+        >
+          Зареєструватися
+        </Button>
+        <Button
+          mode="text"
+          textColor="blue"
+          onPress={() => console.log('Pressed Login')}
+        >
+          Вже є акаунт? Увійти
+        </Button>
+      </View>
     </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'column-reverse',
+    justifyContent: 'flex-end',
   },
   mainBox: {
-    position: 'relative',
     paddingTop: 80,
-    paddingLeft: 16,
-    paddingRight: 16,
+    paddingHorizontal: 16,
     width: '100%',
-    height: '70%',
+    height: '75%',
     backgroundColor: 'white',
     borderTopRightRadius: 25,
     borderTopLeftRadius: 25,
@@ -183,11 +171,13 @@ const styles = StyleSheet.create({
     textShadowColor: 'gray',
     textShadowRadius: 15,
   },
-  input: {
-    marginBottom: 16,
-  },
+
   credentials: {
     marginBottom: 43,
+  },
+
+  input: {
+    marginBottom: 16,
   },
   showPass: {
     position: 'absolute',
