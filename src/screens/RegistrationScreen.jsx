@@ -74,6 +74,7 @@ export default RegistrationScreen = () => {
           />
 
           <TextInput
+            secureTextEntry={true}
             style={[styles.input, styles.password]}
             label="Пароль"
             value={null}
