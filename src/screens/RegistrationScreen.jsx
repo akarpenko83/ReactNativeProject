@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import {
   Image,
   Keyboard,
+  KeyboardAvoidingView,
   SafeAreaView,
   StyleSheet,
+  TouchableWithoutFeedback,
   View,
 } from 'react-native';
 import {
@@ -38,77 +40,95 @@ export default RegistrationScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.mainBox}>
-        <View style={styles.avatarBox}>
-          <Image
-            source={
-              !isKeyboardShown
-                ? null
-                : require('../../assets/avatar.jpg')
-            }
-            style={styles.avatar}
-          />
-          <Image
-            source={
-              !isKeyboardShown
-                ? require('../../assets/addBtn.png')
-                : require('../../assets/addBtnDisabled.png')
-            }
-            style={styles.addBtn}
-          />
-        </View>
-        <Text style={styles.header}>Реєстрація</Text>
-        <View style={styles.credentials}>
-          <TextInput
-            style={styles.input}
-            label="Логін"
-            mode="flat"
-            value={null}
-            onChange={null}
-          />
-          <TextInput
-            style={styles.input}
-            label="Адреса електронної пошти"
-            value={null}
-            onChange={null}
-          />
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.mainBox}>
+          <View style={styles.avatarBox}>
+            {isKeyboardShown && (
+              <Image
+                source={require('../../assets/avatar.jpg')}
+                style={styles.avatar}
+              />
+            )}
+            <Image
+              source={
+                !isKeyboardShown
+                  ? require('../../assets/addBtn.png')
+                  : require('../../assets/addBtnDisabled.png')
+              }
+              style={styles.addBtn}
+            />
+          </View>
+          <Text style={styles.header}>Реєстрація</Text>
+          <View style={styles.credentials}>
+            <KeyboardAvoidingView
+              behavior={
+                Platform.OS == 'ios' ? 'padding' : 'height'
+              }
+            >
+              <TextInput
+                style={styles.input}
+                label="Логін"
+                mode="flat"
+                value={null}
+                onChange={null}
+              />
+            </KeyboardAvoidingView>
+            <KeyboardAvoidingView
+              behavior={
+                Platform.OS == 'ios' ? 'padding' : 'height'
+              }
+            >
+              <TextInput
+                style={styles.input}
+                label="Адреса електронної пошти"
+                value={null}
+                onChange={null}
+              />
+            </KeyboardAvoidingView>
+            <KeyboardAvoidingView
+              behavior={
+                Platform.OS == 'ios' ? 'padding' : 'height'
+              }
+            >
+              <TextInput
+                secureTextEntry={true}
+                style={[styles.input, styles.password]}
+                label="Пароль"
+                value={null}
+                onChange={null}
+              />
+            </KeyboardAvoidingView>
 
-          <TextInput
-            secureTextEntry={true}
-            style={[styles.input, styles.password]}
-            label="Пароль"
-            value={null}
-            onChange={null}
-          />
+            <Button
+              mode="text"
+              textColor="blue"
+              onPress={() =>
+                console.log('Pressed showpassword')
+              }
+              style={styles.showPass}
+            >
+              Показати
+            </Button>
+          </View>
+          <Button
+            mode="contained"
+            buttonColor="darkorange"
+            onPress={() =>
+              console.log('Pressed SignupButton')
+            }
+            style={styles.submitBtn}
+          >
+            Зареєструватися
+          </Button>
           <Button
             mode="text"
             textColor="blue"
-            onPress={() =>
-              console.log('Pressed showpassword')
-            }
-            style={styles.showPass}
+            onPress={() => console.log('Pressed Login')}
           >
-            Показати
+            Вже є акаунт? Увійти
           </Button>
         </View>
-        <Button
-          mode="contained"
-          buttonColor="darkorange"
-          onPress={() =>
-            console.log('Pressed SignupButton')
-          }
-          style={styles.submitBtn}
-        >
-          Зареєструватися
-        </Button>
-        <Button
-          mode="text"
-          textColor="blue"
-          onPress={() => console.log('Pressed Login')}
-        >
-          Вже є акаунт? Увійти
-        </Button>
-      </View>
+      </TouchableWithoutFeedback>
     </SafeAreaView>
   );
 };
