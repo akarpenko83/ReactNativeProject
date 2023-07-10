@@ -1,21 +1,40 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { name as appName } from './app.json';
+import {
+  AppRegistry,
+  ImageBackground,
+  SafeAreaView,
+  StyleSheet,
+} from 'react-native';
+import background from './assets/background.jpg';
 import RegistrationScreen from './src/screens/RegistrationScreen';
+import { PaperProvider } from 'react-native-paper';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <StatusBar style="auto" />
-      <RegistrationScreen />
-    </View>
+    <PaperProvider>
+      <SafeAreaView style={styles.container}>
+        <ImageBackground
+          source={background}
+          resizeMode="cover"
+          style={styles.image}
+        >
+          <RegistrationScreen />
+        </ImageBackground>
+        <StatusBar style="auto" />
+      </SafeAreaView>
+    </PaperProvider>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+  },
+  image: {
+    flex: 1,
+    width: '100%',
   },
 });
+
+AppRegistry.registerComponent(appName, () => App);
