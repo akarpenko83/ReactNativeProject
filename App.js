@@ -10,6 +10,7 @@ import background from './assets/background.jpg';
 import RegistrationScreen from './src/screens/RegistrationScreen';
 import { PaperProvider } from 'react-native-paper';
 import LoginScreen from './src/screens/LoginScreen';
+import PostsScreen from './src/screens/PostsScreen';
 
 export default function App() {
   return (
@@ -20,8 +21,9 @@ export default function App() {
           resizeMode="cover"
           style={styles.image}
         >
-          <LoginScreen />
-          {/* <RegistrationScreen /> */}
+          <RegistrationScreen />
+          {/* <LoginScreen /> */}
+          {/* <PostsScreen /> */}
         </ImageBackground>
         <StatusBar style="auto" />
       </SafeAreaView>
