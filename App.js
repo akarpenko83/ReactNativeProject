@@ -28,6 +28,7 @@ export default function App() {
             <MainStack.Screen
               name="Login"
               component={LoginScreen}
+              options={{ title: null }}
             />
 
             {/* <PostsScreen /> */}

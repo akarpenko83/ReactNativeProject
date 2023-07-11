@@ -1,7 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import {
-  Alert,
   Image,
   ImageBackground,
   Keyboard,
@@ -168,8 +167,9 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   mainBox: {
-    paddingTop: 80,
+    paddingTop: 60,
     paddingHorizontal: 16,
+    paddingBottom: 16,
     width: '100%',
     height: '75%',
     backgroundColor: 'white',
