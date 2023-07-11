@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ImageBackground } from 'react-native';
+import { Alert, ImageBackground } from 'react-native';
 import {
   KeyboardAvoidingView,
   SafeAreaView,
@@ -10,8 +10,6 @@ import {
   TextInput,
   Text,
   Button,
-  Portal,
-  Dialog,
 } from 'react-native-paper';
 import background from '../../assets/background.jpg';
 import { useNavigation } from '@react-navigation/native';
@@ -20,17 +18,21 @@ import { StatusBar } from 'expo-status-bar';
 export default LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [visible, setVisible] = useState(false);
-
-  const showDialog = () => setVisible(true);
-  const hideDialog = () => setVisible(false);
-  const credentials = `e-mail: ${email}, pass: ${password}`;
 
   const navigation = useNavigation();
 
   const handleLogin = () => {
-    console.debug('CREDENTIALS:', credentials);
-    showDialog();
+    const credentials = `e-mail: ${email}, pass: ${password}`;
+    const emailRegex =
+      /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+
+    if (emailRegex.test(email)) {
+      Alert.alert('Success', 'Valid email address!');
+      console.log(credentials);
+    } else {
+      Alert.alert('Error', 'Invalid email address!');
+      return;
+    }
   };
 
   return (
@@ -51,6 +53,8 @@ export default LoginScreen = () => {
             >
               <TextInput
                 style={styles.input}
+                // keyboardType="email-address"
+                autoCapitalize="none"
                 label="Адреса електронної пошти"
                 value={email}
                 onChangeText={setEmail}
@@ -97,19 +101,6 @@ export default LoginScreen = () => {
             Немає акаунту? Зареєструватися
           </Button>
         </View>
-        <Portal>
-          <Dialog visible={visible} onDismiss={hideDialog}>
-            <Dialog.Title>CREDENTIALS</Dialog.Title>
-            <Dialog.Content>
-              <Text variant="bodyMedium">
-                {credentials}
-              </Text>
-            </Dialog.Content>
-            <Dialog.Actions>
-              <Button onPress={hideDialog}>Done</Button>
-            </Dialog.Actions>
-          </Dialog>
-        </Portal>
       </ImageBackground>
     </SafeAreaView>
   );

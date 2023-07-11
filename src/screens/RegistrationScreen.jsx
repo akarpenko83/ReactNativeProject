@@ -1,6 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import {
+  Alert,
   Image,
   ImageBackground,
   Keyboard,
@@ -13,8 +14,6 @@ import {
   TextInput,
   Text,
   Button,
-  Dialog,
-  Portal,
 } from 'react-native-paper';
 import background from '../../assets/background.jpg';
 import { StatusBar } from 'expo-status-bar';
@@ -48,13 +47,20 @@ export default RegistrationScreen = () => {
     };
   }, []);
 
-  const showDialog = () => setVisible(true);
-  const hideDialog = () => setVisible(false);
   const credentials = `login: ${login}, e-mail: ${email}, pass: ${password}`;
 
   const handleSignup = () => {
-    console.debug('CREDENTIALS:', credentials);
-    showDialog();
+    const credentials = `e-mail: ${email}, pass: ${password}`;
+    const emailRegex =
+      /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+
+    if (emailRegex.test(email)) {
+      Alert.alert('Success', 'Valid email address!');
+      console.log(credentials);
+    } else {
+      Alert.alert('Error', 'Invalid email address!');
+      return;
+    }
   };
 
   return (
@@ -91,14 +97,18 @@ export default RegistrationScreen = () => {
               value={login}
               onChangeText={setLogin}
             />
-
-            <TextInput
-              style={styles.input}
-              label="Адреса електронної пошти"
-              value={email}
-              onChangeText={setEmail}
-            />
-
+            <KeyboardAvoidingView
+              behavior={
+                Platform.OS == 'ios' ? 'padding' : 'height'
+              }
+            >
+              <TextInput
+                style={styles.input}
+                label="Адреса електронної пошти"
+                value={email}
+                onChangeText={setEmail}
+              />
+            </KeyboardAvoidingView>
             <KeyboardAvoidingView
               behavior={
                 Platform.OS == 'ios' ? 'padding' : 'height'
@@ -140,19 +150,6 @@ export default RegistrationScreen = () => {
             Вже є акаунт? Увійти
           </Button>
         </View>
-        <Portal>
-          <Dialog visible={visible} onDismiss={hideDialog}>
-            <Dialog.Title>CREDENTIALS</Dialog.Title>
-            <Dialog.Content>
-              <Text variant="bodyMedium">
-                {credentials}
-              </Text>
-            </Dialog.Content>
-            <Dialog.Actions>
-              <Button onPress={hideDialog}>Done</Button>
-            </Dialog.Actions>
-          </Dialog>
-        </Portal>
       </ImageBackground>
     </SafeAreaView>
   );
@@ -171,7 +168,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingBottom: 16,
     width: '100%',
-    height: '75%',
+    height: '85%',
     backgroundColor: 'white',
     borderTopRightRadius: 25,
     borderTopLeftRadius: 25,
@@ -179,7 +176,7 @@ const styles = StyleSheet.create({
   avatarBox: {
     position: 'absolute',
     left: '50%',
-    transform: [{ translateX: -40 }, { translateY: -60 }],
+    transform: [{ translateX: -40 }, { translateY: -50 }],
     shadowColor: 'black',
     shadowOffset: { width: 4, height: 4 },
     shadowOpacity: 0.9,
@@ -203,7 +200,7 @@ const styles = StyleSheet.create({
     bottom: 12,
   },
   header: {
-    marginBottom: 32,
+    marginBottom: 12,
     textAlign: 'center',
     fontSize: 30,
     fontWeight: 'bold',
@@ -213,16 +210,17 @@ const styles = StyleSheet.create({
   },
 
   credentials: {
-    marginBottom: 43,
+    marginBottom: 70,
   },
 
   input: {
-    marginBottom: 16,
+    marginBottom: 6,
+    height: 45,
   },
   showPass: {
     position: 'absolute',
     right: 15,
-    bottom: 25,
+    bottom: 10,
   },
   submitBtn: {
     marginBottom: 12,

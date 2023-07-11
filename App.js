@@ -28,10 +28,12 @@ export default function App() {
             <MainStack.Screen
               name="Login"
               component={LoginScreen}
-              options={{ title: null }}
+              options={{ headerShown: false }}
             />
-
-            {/* <PostsScreen /> */}
+            <MainStack.Screen
+              name="Posts"
+              component={PostsScreen}
+            />
           </MainStack.Navigator>
         </NavigationContainer>
       </TouchableWithoutFeedback>
