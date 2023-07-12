@@ -24,7 +24,7 @@ export default RegistrationScreen = () => {
   const [login, setLogin] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [visible, setVisible] = useState(false);
+
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -47,16 +47,21 @@ export default RegistrationScreen = () => {
     };
   }, []);
 
-  const credentials = `login: ${login}, e-mail: ${email}, pass: ${password}`;
-
   const handleSignup = () => {
-    const credentials = `e-mail: ${email}, pass: ${password}`;
+    const credentials = `login: ${login}, e-mail: ${email}, pass: ${password}`;
     const emailRegex =
       /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 
     if (emailRegex.test(email)) {
       Alert.alert('Success', 'Valid email address!');
       console.log(credentials);
+      navigation.navigate('Home', {
+        screen: 'PostsScreen',
+        params: {
+          email: email,
+          name: login,
+        },
+      });
     } else {
       Alert.alert('Error', 'Invalid email address!');
       return;

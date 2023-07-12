@@ -8,12 +8,32 @@ import {
 import RegistrationScreen from './src/screens/RegistrationScreen';
 import { PaperProvider } from 'react-native-paper';
 import LoginScreen from './src/screens/LoginScreen';
-import PostsScreen from './src/screens/PostsScreen';
-import 'react-native-gesture-handler';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
 
+import 'react-native-gesture-handler';
+import {
+  NavigationContainer,
+  getFocusedRouteNameFromRoute,
+} from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import Home from './src/screens/Home';
 const MainStack = createStackNavigator();
+
+function getHeaderTitle(route) {
+  // If the focused route is not found, we need to assume it's the initial screen
+  // This can happen during if there hasn't been any navigation inside the screen
+  // In our case, it's "Feed" as that's the first screen inside the navigator
+  const routeName =
+    getFocusedRouteNameFromRoute(route) ?? 'PostsScreen';
+
+  switch (routeName) {
+    case 'PostsScreen':
+      return 'Публікації';
+    case 'ProfileScreen':
+      return 'Профіль';
+    case 'CreatePostsScreen':
+      return 'Додати пост';
+  }
+}
 
 export default function App() {
   return (
@@ -31,8 +51,11 @@ export default function App() {
               options={{ headerShown: false }}
             />
             <MainStack.Screen
-              name="Posts"
-              component={PostsScreen}
+              name="Home"
+              component={Home}
+              options={({ route }) => ({
+                headerTitle: getHeaderTitle(route),
+              })}
             />
           </MainStack.Navigator>
         </NavigationContainer>

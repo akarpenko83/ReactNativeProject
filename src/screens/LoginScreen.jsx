@@ -29,6 +29,13 @@ export default LoginScreen = () => {
     if (emailRegex.test(email)) {
       Alert.alert('Success', 'Valid email address!');
       console.log(credentials);
+      navigation.navigate('Home', {
+        screen: 'PostsScreen',
+        params: {
+          email: email,
+          name: 'Some Name',
+        },
+      });
     } else {
       Alert.alert('Error', 'Invalid email address!');
       return;
@@ -53,7 +60,7 @@ export default LoginScreen = () => {
             >
               <TextInput
                 style={styles.input}
-                // keyboardType="email-address"
+                keyboardType="email-address"
                 autoCapitalize="none"
                 label="Адреса електронної пошти"
                 value={email}
