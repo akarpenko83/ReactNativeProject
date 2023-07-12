@@ -3,8 +3,14 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default CreatePostsScreen = () => {
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.container}>
       <Text>CreatePostsScreen</Text>
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
