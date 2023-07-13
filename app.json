@@ -11,9 +11,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
@@ -21,10 +19,21 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
+      },
+      "package": "com.akarpenko83.ReactNativeProject",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyCBJeujlYcPtumij7JGo_U-LWel7sPq0Us"
+        }
       }
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "bb8c1fdc-c684-43a9-b787-e7dc8cab2412"
+      }
     }
   }
 }

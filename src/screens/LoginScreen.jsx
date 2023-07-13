@@ -27,7 +27,6 @@ export default LoginScreen = () => {
       /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 
     if (emailRegex.test(email)) {
-      Alert.alert('Success', 'Valid email address!');
       console.log(credentials);
       navigation.navigate('Home', {
         screen: 'PostsScreen',

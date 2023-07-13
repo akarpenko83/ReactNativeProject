@@ -53,7 +53,6 @@ export default RegistrationScreen = () => {
       /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 
     if (emailRegex.test(email)) {
-      Alert.alert('Success', 'Valid email address!');
       console.log(credentials);
       navigation.navigate('Home', {
         screen: 'PostsScreen',
@@ -169,7 +168,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   mainBox: {
-    paddingTop: 60,
+    paddingTop: 70,
     paddingHorizontal: 16,
     paddingBottom: 16,
     width: '100%',

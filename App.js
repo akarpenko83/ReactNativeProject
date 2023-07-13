@@ -16,12 +16,36 @@ import {
 } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Home from './src/screens/Home';
+import CommentsScreen from './src/screens/CommentsScreen';
+import MapScreen from './src/screens/MapScreen';
 const MainStack = createStackNavigator();
 
+function getBackedNavigation(route) {
+  const routeName =
+    getFocusedRouteNameFromRoute(route) ??
+    'CreatePostsScreen';
+
+  switch (routeName) {
+    case 'CreatePostsScreen':
+      () => (
+        <TouchableOpacity
+          onPress={() => {
+            navigation.goBack();
+          }}
+        >
+          <Image
+            style={styles.logoutBtn}
+            source={require('./assets/arrow-left.png')}
+          />
+        </TouchableOpacity>
+      );
+      break;
+    default:
+      return null;
+  }
+}
+
 function getHeaderTitle(route) {
-  // If the focused route is not found, we need to assume it's the initial screen
-  // This can happen during if there hasn't been any navigation inside the screen
-  // In our case, it's "Feed" as that's the first screen inside the navigator
   const routeName =
     getFocusedRouteNameFromRoute(route) ?? 'PostsScreen';
 
@@ -44,6 +68,7 @@ export default function App() {
             <MainStack.Screen
               name="Signup"
               component={RegistrationScreen}
+              options={{ headerShown: false }}
             />
             <MainStack.Screen
               name="Login"
@@ -54,8 +79,25 @@ export default function App() {
               name="Home"
               component={Home}
               options={({ route }) => ({
+                headerLeft: getBackedNavigation(route),
                 headerTitle: getHeaderTitle(route),
               })}
+            />
+            <MainStack.Screen
+              name="CommentsScreen"
+              component={CommentsScreen}
+              options={{
+                title: 'Коментарі',
+                headerTitleAlign: 'center',
+              }}
+            />
+            <MainStack.Screen
+              name="MapScreen"
+              component={MapScreen}
+              options={{
+                title: 'Мапа',
+                headerTitleAlign: 'center',
+              }}
             />
           </MainStack.Navigator>
         </NavigationContainer>

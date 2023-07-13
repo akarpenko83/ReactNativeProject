@@ -3,7 +3,6 @@ import PostsScreen from './PostsScreen';
 import CreatePostsScreen from './CreatePostsScreen';
 import { Image, StyleSheet } from 'react-native';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import React from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
@@ -13,7 +12,7 @@ export default Home = ({ navigation }) => {
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerTitleAlign: 'center',
-      headerLeft: null,
+
       headerRight: () => (
         <TouchableOpacity
           onPress={() => {
@@ -77,7 +76,8 @@ export default Home = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   logoutBtn: {
-    marginRight: 10,
+    marginHorizontal: 15,
+
     width: 24,
     height: 24,
   },
