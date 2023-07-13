@@ -35,21 +35,6 @@ export default CreatePostsScreen = ({ navigation }) => {
     })();
   }, []);
 
-  // const capturePhoto = async () => {
-  //   if (cameraRef) {
-  //     const { uri } = await cameraRef.takePictureAsync();
-  //     await MediaLibrary.createAssetAsync(uri);
-
-  //     const newPost = {
-  //       title: titleText,
-  //       location: pictureLocation,
-  //       uri: uri,
-  //     };
-
-  //     setPhotoUri(uri);
-  //   }
-  // };
-
   if (hasPermission === null) {
     return <View />;
   }
@@ -182,19 +167,7 @@ export default CreatePostsScreen = ({ navigation }) => {
           style={styles.input}
         />
       </KeyboardAvoidingView>
-      {/* <Button
-        disabled={
-          photoUri && titleText && locationTitle
-            ? false
-            : true
-        }
-        mode="contained"
-        buttonColor="darkorange"
-        onPress={() => handleCreatePost()}
-        style={styles.publishBtn}
-      >
-        Опублікувати
-      </Button> */}
+
       <TouchableOpacity
         disabled={!(photoUri && titleText && locationTitle)}
         onPress={() => handleCreatePost()}
