@@ -173,7 +173,12 @@ export default CreatePostsScreen = ({ navigation }) => {
         onPress={() => handleCreatePost()}
         style={[
           styles.publishBtn,
-          { backgroundColor: 'darkorange' },
+          {
+            backgroundColor:
+              photoUri && titleText && locationTitle
+                ? 'darkorange'
+                : 'gray',
+          },
         ]}
       >
         <Text style={styles.buttonText}>Опублікувати</Text>

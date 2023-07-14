@@ -3,13 +3,13 @@ import PostsScreen from './PostsScreen';
 import CreatePostsScreen from './CreatePostsScreen';
 import { Image, StyleSheet } from 'react-native';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import React from 'react';
+import { useEffect } from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const Tab = createMaterialBottomTabNavigator();
 
 export default Home = ({ navigation }) => {
-  React.useLayoutEffect(() => {
+  useEffect(() => {
     navigation.setOptions({
       headerTitleAlign: 'center',
 
