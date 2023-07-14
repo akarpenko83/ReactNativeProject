@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "204187143261",
+    "project_id": "goit-homework",
+    "storage_bucket": "goit-homework.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:204187143261:android:19b7837c85bba5c1aed1b4",
+        "android_client_info": {
+          "package_name": "com.akarpenko83.ReactNativeProject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "204187143261-o1k45nrvdea0pvujps4b6qemlbn35ebs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.akarpenko83.ReactNativeProject",
+            "certificate_hash": "bbc2edda2ac7900dd240da2fe71eaa02e3513d58"
+          }
+        },
+        {
+          "client_id": "204187143261-nfhtg22bdq8rnu6jfcmrurpmc0frc323.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCBJeujlYcPtumij7JGo_U-LWel7sPq0Us"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "204187143261-nfhtg22bdq8rnu6jfcmrurpmc0frc323.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

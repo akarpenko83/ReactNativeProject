@@ -18,12 +18,17 @@ import {
 import background from '../../assets/background.jpg';
 import { StatusBar } from 'expo-status-bar';
 
+import { useDispatch } from 'react-redux';
+import { authOperations } from '../redux/auth/authOperations';
+
 export default RegistrationScreen = () => {
   const [isKeyboardShown, setKeyboardShown] =
     useState(false);
   const [login, setLogin] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const dispatch = useDispatch();
 
   const navigation = useNavigation();
 
@@ -47,20 +52,29 @@ export default RegistrationScreen = () => {
     };
   }, []);
 
-  const handleSignup = () => {
-    const credentials = `login: ${login}, e-mail: ${email}, pass: ${password}`;
+  const handleSignup = async () => {
+    const credentials = {
+      email: email,
+      password: password,
+    };
     const emailRegex =
       /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 
     if (emailRegex.test(email)) {
-      console.log(credentials);
-      navigation.navigate('Home', {
-        screen: 'PostsScreen',
-        params: {
-          email: email,
-          name: login,
-        },
-      });
+      try {
+        await dispatch(
+          authOperations.register(credentials),
+        );
+        navigation.navigate('Home', {
+          screen: 'PostsScreen',
+          params: {
+            email: email,
+            name: login,
+          },
+        });
+      } catch (error) {
+        throw error;
+      }
     } else {
       Alert.alert('Error', 'Invalid email address!');
       return;
