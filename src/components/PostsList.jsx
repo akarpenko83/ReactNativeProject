@@ -1,7 +1,4 @@
-import {
-  FontAwesome5,
-  EvilIcons,
-} from '@expo/vector-icons';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   Image,
@@ -9,24 +6,47 @@ import {
   Text,
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { useSelector } from 'react-redux';
-import { postsSelectors } from '../redux/posts/postsSlice';
 import { useNavigation } from '@react-navigation/native';
+import {
+  FontAwesome5,
+  EvilIcons,
+} from '@expo/vector-icons';
+import { useDispatch, useSelector } from 'react-redux';
+import { postsSelectors } from '../redux/posts/postsSlice';
+import { commentsOperations } from '../redux/comments/commentsOperations';
 
 export default function PostsList() {
   const navigation = useNavigation();
-
+  const dispatch = useDispatch();
   const postsArray = useSelector(
     postsSelectors.selectPosts,
   );
+  const [commentsLength, setCommentsLength] = useState({});
 
-  const posts = [...postsArray].sort(
-    (a, b) => b.data.postDate - a.data.postDate,
-  );
+  useEffect(() => {
+    const fetchCommentsLength = async postId => {
+      try {
+        const response = await dispatch(
+          commentsOperations.getComments(postId),
+        );
+        const length = response.payload.length;
+        setCommentsLength(prev => ({
+          ...prev,
+          [postId]: length,
+        }));
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    postsArray.forEach(post => {
+      fetchCommentsLength(post.id);
+    });
+  }, [dispatch, postsArray]);
 
   return (
     <>
-      {posts.map(post => (
+      {postsArray.map(post => (
         <View key={post.id}>
           <View style={styles.photo}>
             <Image
@@ -53,16 +73,22 @@ export default function PostsList() {
               <FontAwesome5
                 name="comments"
                 size={20}
-                color="gray"
+                color={
+                  commentsLength[post.id]
+                    ? 'darkorange'
+                    : 'gray'
+                }
               />
               <Text
                 style={{
-                  fontSize: 14,
-                  color: 'gray',
+                  fontSize: 16,
+                  color: 'black',
+                  marginLeft: 8,
                 }}
               >
-                {'  '}
-                Comments
+                {commentsLength[post.id]
+                  ? commentsLength[post.id].toString()
+                  : '0'}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -89,6 +115,7 @@ export default function PostsList() {
     </>
   );
 }
+
 const styles = StyleSheet.create({
   photo: {
     marginBottom: 8,

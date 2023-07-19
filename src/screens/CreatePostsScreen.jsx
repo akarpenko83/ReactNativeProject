@@ -138,7 +138,6 @@ export default CreatePostsScreen = () => {
                 style={styles.button}
                 onPress={async () => {
                   if (cameraRef) {
-                    // capturePhoto();
                     const { uri } =
                       await cameraRef.takePictureAsync();
                     await MediaLibrary.createAssetAsync(

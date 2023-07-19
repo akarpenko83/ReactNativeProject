@@ -20,6 +20,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { persistor, store } from './src/redux/store';
 import getHeaderTitle from './src/helpers/getHeaderTitle';
 import getBackedNavigation from './src/helpers/getBackedNavigation';
+import getHeaderShown from './src/helpers/getHeaderShown';
 
 const MainStack = createStackNavigator();
 

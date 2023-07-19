@@ -7,16 +7,22 @@ import { useEffect } from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { authOperations } from '../redux/auth/authOperations';
 import { useDispatch } from 'react-redux';
+import getHeaderShown from '../helpers/getHeaderShown';
+import { useRoute } from '@react-navigation/native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const Tab = createMaterialBottomTabNavigator();
 
 export default Home = ({ navigation }) => {
   const dispatch = useDispatch();
+  const route = useRoute();
+
+  console.log(getHeaderShown(route));
 
   useEffect(() => {
     navigation.setOptions({
       headerTitleAlign: 'center',
-
+      headerShown: getHeaderShown(route),
       headerRight: () => (
         <TouchableOpacity
           onPress={() => {
@@ -31,7 +37,8 @@ export default Home = ({ navigation }) => {
         </TouchableOpacity>
       ),
     });
-  }, [navigation]);
+  }, [navigation, route]);
+
   return (
     <Tab.Navigator
       initialRouteName="PostsScreen"
@@ -39,16 +46,18 @@ export default Home = ({ navigation }) => {
       activeColor="orange"
       inactiveColor="black"
       barStyle={{
-        backgroundColor: '#694fad',
+        backgroundColor: 'lightgray',
       }}
     >
       <Tab.Screen
         name="PostsScreen"
         component={PostsScreen}
         options={{
-          tabBarIcon: () => (
-            <Image
-              source={require('../../assets/postsIcon.png')}
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons
+              name="dots-square"
+              color={color}
+              size={26}
             />
           ),
         }}
@@ -58,9 +67,11 @@ export default Home = ({ navigation }) => {
         name="CreatePostsScreen"
         component={CreatePostsScreen}
         options={{
-          tabBarIcon: () => (
-            <Image
-              source={require('../../assets/addBtn.png')}
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons
+              name="plus-circle"
+              color={color}
+              size={26}
             />
           ),
         }}
@@ -70,9 +81,11 @@ export default Home = ({ navigation }) => {
         name="ProfileScreen"
         component={ProfileScreen}
         options={{
-          tabBarIcon: () => (
-            <Image
-              source={require('../../assets/userIcon.png')}
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons
+              name="account"
+              color={color}
+              size={26}
             />
           ),
         }}
