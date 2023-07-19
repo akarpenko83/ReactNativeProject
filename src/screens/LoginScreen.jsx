@@ -14,33 +14,44 @@ import {
 import background from '../../assets/background.jpg';
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
+import { useDispatch } from 'react-redux';
+import { authOperations } from '../redux/auth/authOperations';
 
 export default LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const dispatch = useDispatch();
   const navigation = useNavigation();
 
-  const handleLogin = () => {
-    const credentials = `e-mail: ${email}, pass: ${password}`;
+  const handleLogin = async () => {
+    const credentials = {
+      email: email,
+      password: password,
+    };
     const emailRegex =
       /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 
     if (emailRegex.test(email)) {
-      console.log(credentials);
-      navigation.navigate('Home', {
-        screen: 'PostsScreen',
-        params: {
-          email: email,
-          name: 'Some Name',
-        },
-      });
+      try {
+        await dispatch(authOperations.login(credentials));
+        resetForm();
+        navigation.navigate('Home', {
+          screen: 'PostsScreen',
+        });
+      } catch (error) {
+        console.log(error);
+        throw error;
+      }
     } else {
       Alert.alert('Error', 'Invalid email address!');
       return;
     }
   };
-
+  const resetForm = () => {
+    setEmail(null);
+    setPassword(null);
+  };
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />

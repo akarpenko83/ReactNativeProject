@@ -5,10 +5,14 @@ import { Image, StyleSheet } from 'react-native';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { useEffect } from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { authOperations } from '../redux/auth/authOperations';
+import { useDispatch } from 'react-redux';
 
 const Tab = createMaterialBottomTabNavigator();
 
 export default Home = ({ navigation }) => {
+  const dispatch = useDispatch();
+
   useEffect(() => {
     navigation.setOptions({
       headerTitleAlign: 'center',
@@ -16,6 +20,7 @@ export default Home = ({ navigation }) => {
       headerRight: () => (
         <TouchableOpacity
           onPress={() => {
+            dispatch(authOperations.logout());
             navigation.navigate('Login');
           }}
         >
@@ -33,7 +38,9 @@ export default Home = ({ navigation }) => {
       labeled={false}
       activeColor="orange"
       inactiveColor="black"
-      barStyle={{ backgroundColor: '#694fad' }}
+      barStyle={{
+        backgroundColor: '#694fad',
+      }}
     >
       <Tab.Screen
         name="PostsScreen"

@@ -12,6 +12,8 @@ import {
   REGISTER,
 } from 'redux-persist';
 import { authSlice } from './auth/authSlice';
+import { postsSlice } from './posts/postsSlice';
+import { commentsSlice } from './comments/commentsSlice';
 
 const authPersistConfig = {
   key: 'auth',
@@ -24,6 +26,8 @@ export const store = configureStore({
       authPersistConfig,
       authSlice.reducer,
     ),
+    posts: postsSlice.reducer,
+    comments: commentsSlice.reducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({

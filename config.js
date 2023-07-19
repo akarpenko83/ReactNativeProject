@@ -11,7 +11,7 @@ const firebaseConfig = {
   apiKey: 'AIzaSyBXplMRsoatEL95eMEUMRIKH5eJSGARuws',
   authDomain: 'goit-homework.firebaseapp.com',
   databaseURL:
-    'https://goit-homework-default-rtdb.europe-west1.firebasedatabase.app/',
+    'https://goit-homework-default-rtdb.europe-west1.firebasedatabase.app',
   projectId: 'goit-homework',
   storageBucket: 'goit-homework.appspot.com',
   messagingSenderId: '204187143261',

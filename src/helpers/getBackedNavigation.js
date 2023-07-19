@@ -15,7 +15,9 @@ export default function getBackedNavigation(
       () => (
         <TouchableOpacity
           onPress={() => {
-            navigation.goBack();
+            navigation.navigate('Home', {
+              screen: 'PostsScreen',
+            });
           }}
         >
           <Image

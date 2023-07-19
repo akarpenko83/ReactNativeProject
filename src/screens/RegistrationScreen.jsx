@@ -56,6 +56,7 @@ export default RegistrationScreen = () => {
     const credentials = {
       email: email,
       password: password,
+      username: login,
     };
     const emailRegex =
       /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
@@ -67,12 +68,9 @@ export default RegistrationScreen = () => {
         );
         navigation.navigate('Home', {
           screen: 'PostsScreen',
-          params: {
-            email: email,
-            name: login,
-          },
         });
       } catch (error) {
+        console.log(error);
         throw error;
       }
     } else {

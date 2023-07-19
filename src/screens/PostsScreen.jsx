@@ -1,8 +1,5 @@
 import { useRoute } from '@react-navigation/native';
-import {
-  FontAwesome5,
-  EvilIcons,
-} from '@expo/vector-icons';
+
 import {
   Image,
   StyleSheet,
@@ -11,22 +8,27 @@ import {
 } from 'react-native';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
-import React from 'react';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { authSelectors } from '../redux/auth/authSlice';
+import PostsList from '../components/PostsList';
+import { postsSelectors } from '../redux/posts/postsSlice';
+import { postsOperations } from '../redux/posts/postsOperations';
+import { ScrollView } from 'react-native-gesture-handler';
 
-export default PostsScreen = ({ navigation }) => {
-  const {
-    params: { email, name, newPost },
-  } = useRoute();
+export default PostsScreen = () => {
+  const dispatch = useDispatch();
 
-  const commentsPress = () => {
-    navigation.navigate('CommentsScreen');
-  };
-  const mapScreenPress = () => {
-    navigation.navigate('MapScreen', {
-      location: newPost.location,
-    });
-  };
+  const email = useSelector(authSelectors.selectUserEmail);
+  const name = useSelector(authSelectors.selectUsername);
+  const posts = useSelector(postsSelectors.selectPosts);
+  const currentUserUid = useSelector(
+    authSelectors.selectUserUid,
+  );
+
+  useEffect(() => {
+    dispatch(postsOperations.getPosts(currentUserUid));
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -40,62 +42,9 @@ export default PostsScreen = ({ navigation }) => {
           <Text>{email}</Text>
         </View>
       </View>
-
-      {newPost && (
-        <View>
-          <View style={styles.photo}>
-            <Image
-              source={{ uri: newPost.uri }}
-              style={styles.capturedImage}
-            />
-          </View>
-          <Text style={styles.locationTitle}>
-            {newPost.title}
-          </Text>
-          <View style={styles.description}>
-            <TouchableOpacity
-              style={{
-                flexWrap: 'wrap',
-                justifyContent: 'center',
-              }}
-              onPress={() => {
-                commentsPress();
-              }}
-            >
-              <FontAwesome5
-                name="comments"
-                size={20}
-                color="gray"
-              />
-              <Text
-                style={{
-                  fontSize: 14,
-                  color: 'gray',
-                }}
-              >
-                {'  '}
-                Comments
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                flexWrap: 'wrap',
-                justifyContent: 'center',
-              }}
-              onPress={() => {
-                mapScreenPress();
-              }}
-            >
-              <EvilIcons
-                name="location"
-                size={20}
-                color="black"
-              />
-              <Text>{newPost.locationTitle}</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      )}
+      <ScrollView style={styles.postsContainer}>
+        {posts && posts.length > 0 && <PostsList />}
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -146,6 +95,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#E8E8E8',
     borderRadius: 6,
     overflow: 'hidden',
+  },
+  postsContainer: {
+    marginBottom: 80,
   },
   capturedImage: {
     flex: 1,

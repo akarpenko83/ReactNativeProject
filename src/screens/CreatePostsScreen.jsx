@@ -8,12 +8,19 @@ import {
   View,
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Button, TextInput } from 'react-native-paper';
+import { TextInput } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as Location from 'expo-location';
 import * as MediaLibrary from 'expo-media-library';
+import { useDispatch, useSelector } from 'react-redux';
+import { postsOperations } from '../redux/posts/postsOperations';
+import { useNavigation } from '@react-navigation/native';
+import { authSelectors } from '../redux/auth/authSlice';
 
-export default CreatePostsScreen = ({ navigation }) => {
+export default CreatePostsScreen = () => {
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+
   const [photoUri, setPhotoUri] = useState(null);
   const [titleText, setTileText] = useState(null);
   const [locationTitle, setLocationTitle] = useState(null);
@@ -23,6 +30,10 @@ export default CreatePostsScreen = ({ navigation }) => {
   const [cameraRef, setCameraRef] = useState(null);
   const [type, setType] = useState(
     Camera.Constants.Type.back,
+  );
+
+  const currentUserUid = useSelector(
+    authSelectors.selectUserUid,
   );
 
   useLayoutEffect(() => {
@@ -45,9 +56,6 @@ export default CreatePostsScreen = ({ navigation }) => {
     let { status } =
       await Location.requestForegroundPermissionsAsync();
     if (status !== 'granted') {
-      console.log(
-        'Permission to access location was denied',
-      );
     }
 
     let location = await Location.getCurrentPositionAsync(
@@ -64,18 +72,28 @@ export default CreatePostsScreen = ({ navigation }) => {
       locationTitle: locationTitle,
       uri: photoUri,
       location: location,
+      currentUserUid: currentUserUid,
+      postDate: Date.now(),
     };
+
+    await dispatch(postsOperations.addPost(newPost));
+    await dispatch(
+      postsOperations.getPosts(currentUserUid),
+    );
+
+    resetForm();
 
     navigation.navigate('Home', {
       screen: 'PostsScreen',
-      params: {
-        email: 'test@test.com',
-        name: 'Some Name',
-        newPost: newPost,
-      },
     });
   };
 
+  const resetForm = () => {
+    setLocation(null);
+    setTileText(null);
+    setPhotoUri(null);
+    setLocationTitle(null);
+  };
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.photo}>

@@ -8,7 +8,6 @@ export default MapScreen = () => {
     params: { location },
   } = useRoute();
   const coordinates = location.coords;
-  console.log(coordinates);
 
   return (
     <SafeAreaView>
